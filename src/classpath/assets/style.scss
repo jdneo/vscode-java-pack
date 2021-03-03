@@ -1,0 +1,126 @@
+$enable-rounded: false;
+
+.root {
+  margin: auto;
+  overflow: hidden;
+  max-width: 720px !important;
+}
+
+.header {
+  color: var(--vscode-settings-headerForeground) !important;
+}
+
+.description {
+  color: var(--vscode-descriptionForeground) !important;
+}
+
+div.list {
+  line-height: 24px;
+  background-color: var(--vscode-list-dropBackground) !important;
+
+  button.list-group-item:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  div.list-row-header {
+    font-weight: 700;
+    background-color: hsla(0,0%,51%,.04);
+  }
+}
+
+.flex-vertical-center {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+svg.codicon {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.btn-add {
+  background-color: var(--vscode-button-background) !important;
+  color: var(--vscode-button-foreground) !important;
+  padding: 2px 14px !important;
+  border: 0 !important;
+
+  &:hover {
+    color: var(--vscode-button-foreground) !important;
+    background-color: var(--vscode-button-hoverBackground) !important;
+  }
+}
+
+.dropdown {
+  max-width: 320px !important;
+
+  .dropdown-button {
+    color: var(--vscode-settings-dropdownForeground) !important;
+    background-color: var(--vscode-settings-dropdownBackground) !important;
+    border: 1px solid var(--vscode-settings-dropdownBorder) !important;
+    padding: 2px 4px !important;
+    width: 100%;
+  
+    &:focus, &:active {
+      outline: none !important;
+      box-shadow: none !important;
+      border: 1px solid var(--vscode-focusBorder) !important;
+    }
+  }
+  
+  .dropdown-menu {
+    width: 100%;
+    border: 1px solid var(--vscode-focusBorder) !important;
+    background-color: var(--vscode-settings-dropdownBackground) !important;
+    background-clip: unset !important;
+  }
+  
+  .dropdown-item {
+    background-color: var(--vscode-settings-dropdownBackground) !important;
+    color: var(--vscode-settings-dropdownForeground) !important;
+  
+    &:hover {
+      background-color: var(--vscode-list-activeSelectionBackground) !important;
+      color: var(--vscode-list-activeSelectionForeground) !important;
+    }
+  }  
+}
+
+.input {
+  color: var(--vscode-settings-textInputForeground) !important;
+  background-color: var(--vscode-settings-textInputBackground) !important;
+  border: 0 !important;
+  height: auto !important;
+  padding: 2px !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.cursor-default {
+  cursor: default !important;
+}
+
+.spin {
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
+
+.scale-up:active {
+  transform: scale(1.2);
+}
+
+@import "../../assets/vscode.scss";

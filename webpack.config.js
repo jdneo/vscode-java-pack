@@ -9,11 +9,12 @@ module.exports = function (env, argv) {
     name: 'assets',
     mode: 'none',
     entry: {
-      overview: './src/overview/assets/index.ts',
-      'java-runtime': './src/java-runtime/assets/index.ts',
-      'getting-started': './src/getting-started/assets/index.ts',
-      'ext-guide': './src/ext-guide/assets/index.ts',
-      welcome: './src/welcome/assets/index.ts',
+      // overview: './src/overview/assets/index.ts',
+      // 'java-runtime': './src/java-runtime/assets/index.ts',
+      // 'getting-started': './src/getting-started/assets/index.ts',
+      // 'ext-guide': './src/ext-guide/assets/index.ts',
+      // welcome: './src/welcome/assets/index.ts',
+      classpath: './src/classpath/assets/index.tsx'
     },
     module: {
       rules: [{
@@ -51,35 +52,41 @@ module.exports = function (env, argv) {
       devtoolModuleFilenameTemplate: "../[resource-path]"
     },
     plugins: [
+      // new HtmlWebpackPlugin({
+      //   filename: path.resolve(__dirname, 'out/assets/overview/index.html'),
+      //   template: 'src/overview/assets/index.html',
+      //   inlineSource: '.(js|css)$',
+      //   chunks: ['overview']
+      // }),
+      // new HtmlWebpackPlugin({
+      //   filename: path.resolve(__dirname, 'out/assets/java-runtime/index.html'),
+      //   template: 'src/java-runtime/assets/index.html',
+      //   inlineSource: '.(js|css)$',
+      //   chunks: ['java-runtime']
+      // }),
+      // new HtmlWebpackPlugin({
+      //   filename: path.resolve(__dirname, 'out/assets/getting-started/index.html'),
+      //   template: 'src/getting-started/assets/index.html',
+      //   inlineSource: '.(js|css)$',
+      //   chunks: ['getting-started']
+      // }),
+      // new HtmlWebpackPlugin({
+      //   filename: path.resolve(__dirname, 'out/assets/ext-guide/index.html'),
+      //   template: 'src/ext-guide/assets/index.html',
+      //   inlineSource: '.(js|css)$',
+      //   chunks: ['ext-guide']
+      // }),
+      // new HtmlWebpackPlugin({
+      //   filename: path.resolve(__dirname, 'out/assets/welcome/index.html'),
+      //   template: 'src/welcome/assets/index.html',
+      //   inlineSource: '.(js|css)$',
+      //   chunks: ['welcome']
+      // }),
       new HtmlWebpackPlugin({
-        filename: path.resolve(__dirname, 'out/assets/overview/index.html'),
-        template: 'src/overview/assets/index.html',
+        filename: path.resolve(__dirname, 'out/assets/classpath/index.html'),
+        template: 'src/classpath/assets/index.html',
         inlineSource: '.(js|css)$',
-        chunks: ['overview']
-      }),
-      new HtmlWebpackPlugin({
-        filename: path.resolve(__dirname, 'out/assets/java-runtime/index.html'),
-        template: 'src/java-runtime/assets/index.html',
-        inlineSource: '.(js|css)$',
-        chunks: ['java-runtime']
-      }),
-      new HtmlWebpackPlugin({
-        filename: path.resolve(__dirname, 'out/assets/getting-started/index.html'),
-        template: 'src/getting-started/assets/index.html',
-        inlineSource: '.(js|css)$',
-        chunks: ['getting-started']
-      }),
-      new HtmlWebpackPlugin({
-        filename: path.resolve(__dirname, 'out/assets/ext-guide/index.html'),
-        template: 'src/ext-guide/assets/index.html',
-        inlineSource: '.(js|css)$',
-        chunks: ['ext-guide']
-      }),
-      new HtmlWebpackPlugin({
-        filename: path.resolve(__dirname, 'out/assets/welcome/index.html'),
-        template: 'src/welcome/assets/index.html',
-        inlineSource: '.(js|css)$',
-        chunks: ['welcome']
+        chunks: ['classpath']
       }),
       new HtmlWebpackInlineSourcePlugin(),
     ],

@@ -5,7 +5,7 @@ import React from "react";
 
 const Header = (): JSX.Element => {
   return (
-      <h2 className="header">Configure Classpath</h2>
+      <h2 className="mb-0">Configure Classpath</h2>
   );
 };
 

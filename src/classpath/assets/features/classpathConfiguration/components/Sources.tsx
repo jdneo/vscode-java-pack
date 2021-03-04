@@ -37,7 +37,7 @@ const Sources = (): JSX.Element => {
   }, []);
 
   const sourceSections = sources.map((source, index) => (
-    <ListGroup.Item action className="flex-vertical-center cursor-default pl-0 py-0" key={source}>
+    <ListGroup.Item className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} list-row-body pl-0 py-0`} key={source}>
       <span className="ml-1">{source}</span>
       {projectType === ProjectType.UnmanagedFolder &&
         <span className="scale-up float-right">
@@ -51,18 +51,18 @@ const Sources = (): JSX.Element => {
 
   return (
     <div>
-        <h3 className="header">Sources</h3>
-        <span className="description">Specify the source locations.</span>
-        <ListGroup className="list mt-2">
-          <ListGroup.Item className="list-row-header pr-2 pl-0 py-0">
-            <span className="ml-1">Path</span>
-          </ListGroup.Item>
-          {sourceSections}
-        </ListGroup>
-        {projectType === ProjectType.UnmanagedFolder &&
-          <a role="button" className="btn btn-add mt-1" onClick={() => handleAdd()}>Add</a>
-        }
-      </div>
+      <h4 className="setting-section-header mb-1">Sources</h4>
+      <span className="setting-section-description">Specify the source locations.</span>
+      <ListGroup className="list mt-1">
+        <ListGroup.Item className="list-row-header pr-2 pl-0 py-0">
+          <span className="ml-1">Path</span>
+        </ListGroup.Item>
+        {sourceSections}
+      </ListGroup>
+      {projectType === ProjectType.UnmanagedFolder &&
+        <a role="button" className="btn btn-action mt-2" onClick={() => handleAdd()}>Add</a>
+      }
+    </div>
   );
 };
 

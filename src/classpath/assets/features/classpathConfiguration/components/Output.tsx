@@ -30,11 +30,11 @@ const Output = (): JSX.Element => {
 
     return (
       <div>
-        <h3 className="header">Output</h3>
-        <span className="description">Specify compile output path location.</span>
-        <div className="input text-break pl-1 mb-1 mt-2">{output}</div>
+        <h4 className="setting-section-header mb-1">Output</h4>
+        <span className="setting-section-description">Specify compile output path location.</span>
+        <div className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} input text-break pl-1 mt-1`}>{output}</div>
         {projectType === ProjectType.UnmanagedFolder &&
-          <a role="button" className="btn btn-add" onClick={() => handleClick()}>
+          <a role="button" className="btn btn-action mt-2" onClick={() => handleClick()}>
             Browse
           </a>
         }

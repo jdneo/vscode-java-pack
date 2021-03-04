@@ -10,12 +10,13 @@ import { Dispatch } from "@reduxjs/toolkit";
 import Output from "./components/Output";
 import ProjectSelector from "./components/ProjectSelector";
 import Sources from "./components/Sources";
-import Dependencies from "./components/Dependencies";
+import ReferencedLibraries from "./components/ReferencedLibraries";
 import Header from "./components/Header";
 import Exception from "./components/Exception";
 import { ProjectInfo } from "../../../types";
 import { listProjects, loadClasspath } from "./classpathConfigurationViewSlice";
 import { onWillListProjects } from "../../utils";
+import JdkRuntime from "./components/JdkRuntime";
 
 const ClasspathConfigurationView = (): JSX.Element => {
 
@@ -29,19 +30,24 @@ const ClasspathConfigurationView = (): JSX.Element => {
     content = (
       <div>
         <ProjectSelector />
-        <Row className="my-4">
+        <Row className="setting-section">
           <Col>
             <Sources />
           </Col>
         </Row>
-        <Row className="my-4">
+        <Row className="setting-section">
           <Col>
             <Output />
           </Col>
         </Row>
-        <Row className="my-4">
+        <Row className="setting-section">
           <Col>
-            <Dependencies />
+            <JdkRuntime />
+          </Col>
+        </Row>
+        <Row className="setting-section">
+          <Col>
+            <ReferencedLibraries />
           </Col>
         </Row>
       </div>
@@ -69,7 +75,7 @@ const ClasspathConfigurationView = (): JSX.Element => {
 
   return (
     <Container className="root">
-      <Row className="my-4">
+      <Row className="setting-header">
         <Col>
           <Header />
         </Col>

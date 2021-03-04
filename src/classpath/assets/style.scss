@@ -6,50 +6,29 @@ $enable-rounded: false;
   max-width: 720px !important;
 }
 
-.header {
+.setting-header {
+  padding: 15px 0px 10px 0px
+}
+
+.setting-section {
+  padding: 12px 0px 18px 0px;
+
+  &:hover {
+    background-color: var(--vscode-notebook-rowHoverBackground) !important;
+  }
+}
+
+.setting-section-header {
   color: var(--vscode-settings-headerForeground) !important;
 }
 
-.description {
+.setting-section-description {
   color: var(--vscode-descriptionForeground) !important;
 }
 
-div.list {
-  line-height: 24px;
-  background-color: var(--vscode-list-dropBackground) !important;
 
-  button.list-group-item:focus {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-
-  div.list-row-header {
-    font-weight: 700;
-    background-color: hsla(0,0%,51%,.04);
-  }
-}
-
-.flex-vertical-center {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-}
-
-svg.codicon {
-  width: 1.2em;
-  height: 1.2em;
-}
-
-.btn-add {
-  background-color: var(--vscode-button-background) !important;
-  color: var(--vscode-button-foreground) !important;
-  padding: 2px 14px !important;
-  border: 0 !important;
-
-  &:hover {
-    color: var(--vscode-button-foreground) !important;
-    background-color: var(--vscode-button-hoverBackground) !important;
-  }
+.inactive {
+  opacity: 0.67
 }
 
 .dropdown {
@@ -87,20 +66,71 @@ svg.codicon {
   }  
 }
 
+div.list {
+  line-height: 24px;
+
+  div.list-row-header {
+    font-weight: 700;
+  }
+
+  div.list-row-body {
+    &:hover:not(.inactive) {
+      background-color: var(--vscode-list-hoverBackground) !important;
+    }
+  }
+
+  .list-group-item {
+    border: 1px !important;
+    color: var(--vscode-settings-textInputForeground) !important;
+    background-color: var(--vscode-editor-background) !important;
+
+    &:nth-of-type(odd) {
+      background-color: hsla(0, 0%, 51%, .04) !important;
+    }
+  }
+}
+
+.flex-vertical-center {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+svg.codicon {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.btn-action {
+  background-color: var(--vscode-button-background) !important;
+  color: var(--vscode-button-foreground) !important;
+  padding: 2px 14px !important;
+  border: 0 !important;
+
+  &:hover {
+    color: var(--vscode-button-foreground) !important;
+    background-color: var(--vscode-button-hoverBackground) !important;
+  }
+}
+
+body.vscode-high-contrast {
+  .btn-action {
+    border: 1px solid var(--vscode-settings-textInputBorder) !important;
+  }
+}
+
 .input {
   color: var(--vscode-settings-textInputForeground) !important;
   background-color: var(--vscode-settings-textInputBackground) !important;
-  border: 0 !important;
+  border: 1px solid var(--vscode-settings-textInputBorder) !important;
   height: auto !important;
-  padding: 2px !important;
+  padding: 4px !important;
+  min-width: 200px !important;
+  display: table !important;
 }
 
 .cursor-pointer {
   cursor: pointer !important;
-}
-
-.cursor-default {
-  cursor: default !important;
 }
 
 .spin {

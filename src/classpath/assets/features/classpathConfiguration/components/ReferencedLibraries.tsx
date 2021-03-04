@@ -8,10 +8,10 @@ import { ListGroup } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import closeIcon from "@iconify-icons/codicon/chrome-close";
 import { removeReferencedLibrary, addReferencedLibraries } from "../classpathConfigurationViewSlice";
-import { encodeCommandUri, onWillAddReferencedLibraries, onWillRemoveReferencedLibraries } from "../../../utils";
+import { onWillAddReferencedLibraries, onWillRemoveReferencedLibraries } from "../../../utils";
 import { ProjectType } from "../../../../types";
 
-const Dependencies = (): JSX.Element => {
+const ReferencedLibraries = (): JSX.Element => {
   const referencedLibraries: string[] = useSelector((state: any) => state.classpathConfig.referencedLibraries);
   const projectType: ProjectType = useSelector((state: any) => state.classpathConfig.projectType);
   const dispatch: Dispatch<any> = useDispatch();
@@ -38,7 +38,7 @@ const Dependencies = (): JSX.Element => {
   }, []);
 
   const referencedLibrariesSections = referencedLibraries.map((library, index) => (
-    <ListGroup.Item action className="flex-vertical-center cursor-default pl-0 py-0" key={library}>
+    <ListGroup.Item className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} list-row-body pl-0 py-0`} key={library}>
       <span className="ml-1">{library}</span>
       {projectType === ProjectType.UnmanagedFolder &&
         <span className="scale-up float-right">
@@ -52,25 +52,18 @@ const Dependencies = (): JSX.Element => {
 
   return (
     <div>
-        <h3 className="header">Dependencies</h3>
-        <div className="mb-2">
-          <h5 className="header">Runtime</h5>
-          <span className="description">Map Java execution environment to local JDKs. Edit in <a href={encodeCommandUri("java.runtime")}>Configure Java Runtime</a>.</span>
-        </div>
-        <div>
-          <h5 className="header">Referenced Libraries</h5>
-          <span className="description">Specify referenced libraries of the project.</span>
-          <ListGroup className="list mt-2">
-          <ListGroup.Item className="list-row-header pr-2 pl-0 py-0">
-            <span className="ml-1">Path</span>
-          </ListGroup.Item>
-            {referencedLibrariesSections}
-          </ListGroup>
-          {projectType === ProjectType.UnmanagedFolder &&
-            <a role="button" className="btn btn-add mt-1" onClick={() => handleAdd()}>Add</a>
-          }
-        </div>
-      </div>
+      <h4 className="setting-section-header mb-1">Referenced Libraries</h4>
+      <span className="setting-section-description">Specify referenced libraries of the project.</span>
+      <ListGroup className="list mt-1">
+      <ListGroup.Item className="list-row-header pr-2 pl-0 py-0">
+        <span className="ml-1">Path</span>
+      </ListGroup.Item>
+        {referencedLibrariesSections}
+      </ListGroup>
+      {projectType === ProjectType.UnmanagedFolder &&
+        <a role="button" className="btn btn-action mt-2" onClick={() => handleAdd()}>Add</a>
+      }
+    </div>
   );
 };
 
@@ -81,4 +74,4 @@ interface OnDidAddReferencedLibrariesEvent {
   };
 }
 
-export default Dependencies;
+export default ReferencedLibraries;

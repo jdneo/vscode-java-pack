@@ -44,7 +44,7 @@ const ProjectSelector = (): JSX.Element | null => {
   });
 
   return (
-    <Row className="my-4">
+    <Row className="setting-section">
       <Col>
         <span>Select the project.</span>
         <Dropdown>

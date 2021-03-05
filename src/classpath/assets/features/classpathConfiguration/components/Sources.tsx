@@ -51,7 +51,12 @@ const Sources = (): JSX.Element => {
 
   return (
     <div>
-      <h4 className="setting-section-header mb-1">Sources</h4>
+      <div className="setting-section-header mb-1">
+        <h4 className="mb-0">Sources</h4>
+        {projectType !== ProjectType.UnmanagedFolder &&
+          <span className="ml-2">(Read-only)</span>
+        }
+      </div>
       <span className="setting-section-description">Specify the source locations.</span>
       <ListGroup className="list mt-1">
         <ListGroup.Item className="list-row-header pr-2 pl-0 py-0">

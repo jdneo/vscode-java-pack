@@ -7,7 +7,7 @@ $enable-rounded: false;
 }
 
 .setting-header {
-  padding: 15px 0px 10px 0px
+  padding: 15px 0px 10px 0px;
 }
 
 .setting-section {
@@ -20,6 +20,12 @@ $enable-rounded: false;
 
 .setting-section-header {
   color: var(--vscode-settings-headerForeground) !important;
+  display: flex;
+  align-items: baseline;
+
+  span {
+    color: var(--vscode-descriptionForeground) !important;
+  }
 }
 
 .setting-section-description {
@@ -28,7 +34,7 @@ $enable-rounded: false;
 
 
 .inactive {
-  opacity: 0.67
+  opacity: 0.67;
 }
 
 .dropdown {
@@ -82,7 +88,7 @@ div.list {
   .list-group-item {
     border: 1px !important;
     color: var(--vscode-settings-textInputForeground) !important;
-    background-color: var(--vscode-editor-background) !important;
+    background-color: transparent !important;
 
     &:nth-of-type(odd) {
       background-color: hsla(0, 0%, 51%, .04) !important;

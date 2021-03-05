@@ -50,7 +50,7 @@ const ReferencedLibraries = (): JSX.Element => {
     </ListGroup.Item>
   ));
 
-  return (
+  return projectType === ProjectType.UnmanagedFolder && (
     <div>
       <h4 className="setting-section-header mb-1">Referenced Libraries</h4>
       <span className="setting-section-description">Specify referenced libraries of the project.</span>

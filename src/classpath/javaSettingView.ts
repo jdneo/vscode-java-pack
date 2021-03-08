@@ -212,8 +212,7 @@ async function getProjectClasspathFromLS(uri: vscode.Uri): Promise<ClasspathComp
     classpath.sourcePaths = classpath.sourcePaths.map(p => {
         const relativePath: string = path.relative(baseFsPath, p);
         if (!relativePath) {
-            // TODO: how to handle source = root
-            return "<ROOT>";
+            return ".";
         }
         return relativePath;
     });

@@ -36,18 +36,27 @@ const Sources = (): JSX.Element => {
     return () => window.removeEventListener("message", onDidAddSourceFolder);
   }, []);
 
-  const sourceSections = sources.map((source, index) => (
-    <ListGroup.Item className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} list-row-body pl-0 py-0`} key={source}>
-      <span className="ml-1">{source}</span>
-      {projectType === ProjectType.UnmanagedFolder &&
-        <span className="scale-up float-right">
-          <a onClick={() => handleRemove(index)}>
-            <Icon className="codicon cursor-pointer" icon={closeIcon} />
-          </a>
-        </span>
-      }
-    </ListGroup.Item>
-  ));
+  let sourceSections: JSX.Element | JSX.Element[];
+  if (sources.length === 0) {
+    sourceSections = (
+      <ListGroup.Item className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} list-row-body pl-0 py-0`}>
+        <span className="ml-1"><em>No source paths are configured.</em></span>
+      </ListGroup.Item>
+    );
+  } else {
+    sourceSections = sources.map((source, index) => (
+      <ListGroup.Item className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} list-row-body pl-0 py-0`} key={source}>
+        <span className="ml-1">{source}</span>
+        {projectType === ProjectType.UnmanagedFolder &&
+          <span className="scale-up float-right">
+            <a onClick={() => handleRemove(index)}>
+              <Icon className="codicon cursor-pointer" icon={closeIcon} />
+            </a>
+          </span>
+        }
+      </ListGroup.Item>
+    ));
+  }
 
   return (
     <div>

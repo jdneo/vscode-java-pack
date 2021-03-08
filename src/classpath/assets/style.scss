@@ -126,13 +126,14 @@ body.vscode-high-contrast {
 }
 
 .input {
-  color: var(--vscode-settings-textInputForeground) !important;
-  background-color: var(--vscode-settings-textInputBackground) !important;
-  border: 1px solid var(--vscode-settings-textInputBorder) !important;
-  height: auto !important;
-  padding: 4px !important;
-  min-width: 200px !important;
-  display: table !important;
+  color: var(--vscode-settings-textInputForeground);
+  background-color: var(--vscode-settings-textInputBackground);
+  border: 1px solid var(--vscode-settings-textInputBorder);
+  height: auto;
+  padding: 4px;
+  min-width: 200px;
+  min-height: 26px;
+  display: table;
 }
 
 .cursor-pointer {

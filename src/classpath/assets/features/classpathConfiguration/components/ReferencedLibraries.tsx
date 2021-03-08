@@ -37,22 +37,36 @@ const ReferencedLibraries = (): JSX.Element => {
     return () => window.removeEventListener("message", onDidAddReferencedLibraries);
   }, []);
 
-  const referencedLibrariesSections = referencedLibraries.map((library, index) => (
-    <ListGroup.Item className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} list-row-body pl-0 py-0`} key={library}>
-      <span className="ml-1">{library}</span>
-      {projectType === ProjectType.UnmanagedFolder &&
-        <span className="scale-up float-right">
-          <a onClick={() => handleRemove(index)}>
-            <Icon className="codicon cursor-pointer" icon={closeIcon} />
-          </a>
-        </span>
-      }
-    </ListGroup.Item>
-  ));
+  let referencedLibrariesSections: JSX.Element | JSX.Element[];
+  if (referencedLibraries.length === 0) {
+    referencedLibrariesSections = (
+      <ListGroup.Item className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} list-row-body pl-0 py-0`}>
+        <span className="ml-1"><em>No referenced libraries are configured.</em></span>
+      </ListGroup.Item>
+    );
+  } else {
+    referencedLibrariesSections = referencedLibraries.map((library, index) => (
+      <ListGroup.Item className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} list-row-body pl-0 py-0`} key={library}>
+        <span className="ml-1">{library}</span>
+        {projectType === ProjectType.UnmanagedFolder &&
+          <span className="scale-up float-right">
+            <a onClick={() => handleRemove(index)}>
+              <Icon className="codicon cursor-pointer" icon={closeIcon} />
+            </a>
+          </span>
+        }
+      </ListGroup.Item>
+    ));
+  }
 
-  return projectType === ProjectType.UnmanagedFolder && (
+  return (
     <div>
-      <h4 className="setting-section-header mb-1">Referenced Libraries</h4>
+      <div className="setting-section-header mb-1">
+        <h4 className="mb-0">Referenced Libraries</h4>
+        {projectType !== ProjectType.UnmanagedFolder &&
+          <span className="ml-2">(Read-only)</span>
+        }
+      </div>
       <span className="setting-section-description">Specify referenced libraries of the project.</span>
       <ListGroup className="list mt-1">
       <ListGroup.Item className="list-row-header pr-2 pl-0 py-0">

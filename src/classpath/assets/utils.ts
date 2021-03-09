@@ -3,13 +3,7 @@
 
 import { ProjectType } from "../types";
 
-export function encodeCommandUri(command: string, args?: string[]) {
-  let ret = `command:${command}`;
-  if (args && args.length > 0) {
-    ret += `?${encodeURIComponent(JSON.stringify(args))}`;
-  }
-  return ret;
-}
+export const WEBVIEW_ID = "java.classpathConfiguration";
 
 // RPC calls to VS Code
 declare function acquireVsCodeApi(): any;
@@ -31,6 +25,13 @@ export function onWillLoadProjectClasspath(uri: string) {
 export function onWillSelectOutputPath() {
   vscode.postMessage({
     command: "onWillSelectOutputPath"
+  });
+}
+
+export function onWillRemoveSourcePath(sourcePaths: string[]) {
+  vscode.postMessage({
+    command: "onWillRemoveSourcePath",
+    sourcePaths,
   });
 }
 

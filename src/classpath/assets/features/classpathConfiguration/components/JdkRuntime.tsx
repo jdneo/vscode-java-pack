@@ -2,13 +2,14 @@
 // Licensed under the MIT license.
 
 import React from "react";
-import { encodeCommandUri } from "../../../utils";
+import { encodeCommandUriWithTelemetry } from "../../../../../utils/webview";
+import { WEBVIEW_ID } from "../../../utils";
 
 const JdkRuntime = (): JSX.Element => {
   return (
     <div>
       <h4 className="setting-section-header mb-1">JDK Runtime</h4>
-      <span className="setting-section-description">Map Java execution environment to local JDKs. Edit in <a href={encodeCommandUri("java.runtime")}>Configure Java Runtime</a>.</span>
+      <span className="setting-section-description">Map Java execution environment to local JDKs. Edit in <a href={encodeCommandUriWithTelemetry(WEBVIEW_ID, "classpath.runtime", "java.runtime")}>Configure Java Runtime</a>.</span>
     </div>
   );
 };

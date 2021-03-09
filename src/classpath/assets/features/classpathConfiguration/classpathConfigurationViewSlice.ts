@@ -24,22 +24,18 @@ export const classpathConfigurationViewSlice = createSlice({
       },
       loadClasspath: (state, action) => {
         state.projectType = action.payload.projectType;
-        state.sources = action.payload.sources;
         state.output = action.payload.output;
         // Only update the array when they have different elements.
+        // Only update the array when they have different elements.
+        if (!_.isEmpty(_.xor(state.sources, action.payload.sources))) {
+          state.sources = action.payload.sources;
+        }
         if (!_.isEmpty(_.xor(state.referencedLibraries, action.payload.referencedLibraries))) {
           state.referencedLibraries = action.payload.referencedLibraries;
         }
       },
-      // TODO: merge remove & add to update?
-      removeSource: (state, action) => {
-        const removedIndex: number = action.payload as number;
-        if (removedIndex > -1 && removedIndex < state.sources.length) {
-          state.sources.splice(removedIndex, 1);
-        }
-      },
-      addSource: (state, action) => {
-        state.sources.push(action.payload);
+      updateSource: (state, action) => {
+        state.sources = action.payload;
       },
       setOutputPath: (state, action) => {
         state.output = action.payload;
@@ -61,8 +57,7 @@ export const {
   listProjects,
   activeProjectChange,
   loadClasspath,
-  removeSource,
-  addSource,
+  updateSource,
   setOutputPath,
   removeReferencedLibrary,
   addReferencedLibraries,

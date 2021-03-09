@@ -47,7 +47,7 @@ const ProjectSelector = (): JSX.Element | null => {
     <Row className="setting-section">
       <Col>
         <span>Select the project.</span>
-        <Dropdown>
+        <Dropdown className="mt-1">
           <Dropdown.Toggle className="dropdown-button flex-vertical-center text-left">
             {projects[activeProjectIndex].name}
           </Dropdown.Toggle>
@@ -57,7 +57,7 @@ const ProjectSelector = (): JSX.Element | null => {
           </Dropdown.Menu>
         </Dropdown>
         {(projectType === ProjectType.Gradle || projectType === ProjectType.Maven) &&
-          <div className="mt-2">
+          <div className="mt-1">
             <span>
               Below settings are only applicable for non-build tool projects. for the {projectType} project, please edit them in the <a href="" onClick={() => handleOpenBuildFile()}>{buildFile}</a> file.
             </span>

@@ -26,11 +26,10 @@ export const classpathConfigurationViewSlice = createSlice({
         state.projectType = action.payload.projectType;
         state.output = action.payload.output;
         // Only update the array when they have different elements.
-        // Only update the array when they have different elements.
-        if (!_.isEmpty(_.xor(state.sources, action.payload.sources))) {
+        if (isDifferentStringArray(state.sources, action.payload.sources)) {
           state.sources = action.payload.sources;
         }
-        if (!_.isEmpty(_.xor(state.referencedLibraries, action.payload.referencedLibraries))) {
+        if (isDifferentStringArray(state.referencedLibraries, action.payload.referencedLibraries)) {
           state.referencedLibraries = action.payload.referencedLibraries;
         }
       },
@@ -52,6 +51,10 @@ export const classpathConfigurationViewSlice = createSlice({
       },
     },
 });
+
+function isDifferentStringArray(a1: string[], a2: string[]): boolean {
+  return !_.isEmpty(_.xor(a1, a2));
+}
 
 export const {
   listProjects,

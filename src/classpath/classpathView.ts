@@ -3,29 +3,28 @@
 
 import * as vscode from "vscode";
 import * as path from "path";
-import { loadTextFromFile } from "../utils";
+import { getExtensionContext, loadTextFromFile } from "../utils";
 import * as fse from "fs-extra";
 import { ProjectInfo, ClasspathComponent, ProjectType } from "./types";
 import _ from "lodash";
 import minimatch from "minimatch";
-import { instrumentOperation, sendInfo, setUserError } from "vscode-extension-telemetry-wrapper";
+import { instrumentOperation, sendError, sendInfo, setUserError } from "vscode-extension-telemetry-wrapper";
 
 let classpathConfigurationPanel: vscode.WebviewPanel | undefined;
 let lsApi: LanguageServerAPI | undefined;
+let currentProjectRoot: vscode.Uri;
 const SOURCE_PATH_KEY: string = "org.eclipse.jdt.ls.core.sourcePaths";
 const OUTPUT_PATH_KEY: string = "org.eclipse.jdt.ls.core.defaultOutputPath";
 const REFERENCED_LIBRARIES_KEY: string = "org.eclipse.jdt.ls.core.referencedLibraries";
 
 export async function showClasspathConfigurationPage(context: vscode.ExtensionContext): Promise<void> {
-    let currentProjectRoot: vscode.Uri;
     if (classpathConfigurationPanel) {
         classpathConfigurationPanel.reveal();
         return;
     }
 
-    lsApi = await checkRequirement();
     if (!lsApi) {
-        return;
+        lsApi = await checkRequirement();
     }
 
     classpathConfigurationPanel = vscode.window.createWebviewPanel(
@@ -39,6 +38,30 @@ export async function showClasspathConfigurationPage(context: vscode.ExtensionCo
         }
     );
 
+    await initializeWebview(context, lsApi);
+}
+
+export class ClassPathConfigurationViewSerializer implements vscode.WebviewPanelSerializer {
+    async deserializeWebviewPanel(webviewPanel: vscode.WebviewPanel, _state: any) {
+        if (classpathConfigurationPanel) {
+            classpathConfigurationPanel.reveal();
+            webviewPanel.dispose();
+            return;
+        }
+
+        classpathConfigurationPanel = webviewPanel;
+        if (!lsApi) {
+            lsApi = await checkRequirement();
+        }
+        await initializeWebview(getExtensionContext(), lsApi);
+    }
+}
+
+async function initializeWebview(context: vscode.ExtensionContext, lsApi?: any): Promise<void> {
+    if (!classpathConfigurationPanel) {
+        sendError(new Error("classpathConfigurationPanel is not defined."));
+        return;
+    }
     classpathConfigurationPanel.iconPath = {
         light: vscode.Uri.file(path.join(context.extensionPath, "caption.light.svg")),
         dark: vscode.Uri.file(path.join(context.extensionPath, "caption.dark.svg"))
@@ -92,8 +115,10 @@ export async function showClasspathConfigurationPage(context: vscode.ExtensionCo
 async function checkRequirement(): Promise<LanguageServerAPI | undefined> {
     const javaExt = vscode.extensions.getExtension("redhat.java");
     if (!javaExt) {
-        // TODO: check extension version
-        return undefined;
+        const err: Error = new Error("redhat.java is not installed or the version is too stale.");
+        vscode.window.showErrorMessage(err.message);
+        setUserError(err);
+        throw(err);
     }
     await javaExt.activate();
     return javaExt.exports;
@@ -180,7 +205,7 @@ const removeSourcePath = instrumentOperation("classpath.removeSourcePath", (_ope
     );
 });
 
-const setOutputPath = instrumentOperation("classpath.setOutputPath", async (_operationId: string, currentProjectRoot: vscode.Uri) => {
+const setOutputPath = instrumentOperation("classpath.setOutputPath", async (operationId: string, currentProjectRoot: vscode.Uri) => {
     const outputFolder: vscode.Uri[] | undefined = await vscode.window.showOpenDialog({
         defaultUri: vscode.workspace.workspaceFolders?.[0].uri,
         openLabel: "Select Output Folder",
@@ -191,33 +216,39 @@ const setOutputPath = instrumentOperation("classpath.setOutputPath", async (_ope
     if (outputFolder) {
         const projectRootPath: string = currentProjectRoot.fsPath;
         const outputFullPath: string = outputFolder[0].fsPath;
-        if ((await fse.readdir(outputFullPath)).length) {
-            const err: Error = new Error("Cannot set the output path to an un-empty folder.");
-            vscode.window.showErrorMessage(err.message);
-            setUserError(err);
-            throw(err);
-        }
-        const output: string = path.relative(projectRootPath, outputFullPath);
-        if (output.startsWith("..")) {
+        const outputRelativePath: string = path.relative(projectRootPath, outputFullPath);
+        if (outputRelativePath.startsWith("..")) {
             const err: Error = new Error("Cannot set the output path outside the project root.");
             vscode.window.showErrorMessage(err.message);
             setUserError(err);
             throw(err);
         }
-        if (!output) {
+        if (!outputRelativePath) {
             const err: Error = new Error("Cannot set the project root path as the output path.");
             vscode.window.showErrorMessage(err.message);
             setUserError(err);
             throw(err);
         }
+        if ((await fse.readdir(outputFullPath)).length) {
+            const choice: string | undefined = await vscode.window.showInformationMessage(`The contents in ${outputFullPath} will be removed, are you sure to continue?`, "Yes", "No");
+            if (choice === "Yes") {
+                await fse.remove(outputFullPath);
+                await fse.ensureDir(outputFullPath);
+            } else {
+                sendInfo(operationId, {
+                    canceled: "Cancelled for un-empty output folder",
+                });
+                return;
+            }
+        }
         vscode.workspace.getConfiguration("java", currentProjectRoot).update(
             "project.outputPath",
-            output,
+            outputRelativePath,
             vscode.ConfigurationTarget.Workspace,
         );
         classpathConfigurationPanel?.webview.postMessage({
             command: "onDidSelectOutputPath",
-            output,
+            output: outputRelativePath,
         });
     }
 });

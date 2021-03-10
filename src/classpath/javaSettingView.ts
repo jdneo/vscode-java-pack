@@ -333,7 +333,10 @@ async function getProjectClasspathFromLS(uri: vscode.Uri): Promise<ClasspathComp
         }
         return relativePath;
     });
-    classpath.defaultOutputPath = path.relative(baseFsPath, classpath.defaultOutputPath);
+    const outputRelativePath: string = path.relative(baseFsPath, classpath.defaultOutputPath);
+    if (!outputRelativePath.startsWith("..")) {
+        classpath.defaultOutputPath = path.relative(baseFsPath, classpath.defaultOutputPath);
+    }
     classpath.referenceLibraries = classpath.referenceLibraries.map(p => {
         const normalizedPath: string = vscode.Uri.file(p).fsPath;
         if (normalizedPath.startsWith(baseFsPath)) {

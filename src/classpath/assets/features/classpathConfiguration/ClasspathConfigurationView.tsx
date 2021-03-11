@@ -2,9 +2,7 @@
 // Licensed under the MIT license.
 
 import React, { useEffect } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { Icon } from "@iconify/react";
-import loadingIcon from "@iconify-icons/codicon/loading";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import Output from "./components/Output";
@@ -23,7 +21,7 @@ const ClasspathConfigurationView = (): JSX.Element => {
   const projects: ProjectInfo[] | undefined = useSelector((state: any) => state.classpathConfig.projects);
   let content: JSX.Element;
   if (projects === undefined) {
-    content = <h3><Icon className="codicon spin" icon={loadingIcon} /></h3>;
+    content = <Spinner animation="border" role="status" size="sm"><span className="sr-only">Loading...</span></Spinner>
   } else if (projects.length === 0) {
     content = <Exception />;
   } else {

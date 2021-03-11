@@ -62,6 +62,11 @@
         "title": "Configure Classpath"
       },
       {
+        "command": "java.classpathConfiguration2",
+        "category": "Java",
+        "title": "Configure Classpath 2"
+      },
+      {
         "command": "java.overview",
         "title": "Java: Overview"
       },

@@ -18,13 +18,13 @@ const OUTPUT_PATH_KEY: string = "org.eclipse.jdt.ls.core.defaultOutputPath";
 const REFERENCED_LIBRARIES_KEY: string = "org.eclipse.jdt.ls.core.referencedLibraries";
 
 export async function showClasspathConfigurationPage(context: vscode.ExtensionContext): Promise<void> {
+    if (!lsApi) {
+        lsApi = await checkRequirement();
+    }
+
     if (classpathConfigurationPanel) {
         classpathConfigurationPanel.reveal();
         return;
-    }
-
-    if (!lsApi) {
-        lsApi = await checkRequirement();
     }
 
     classpathConfigurationPanel = vscode.window.createWebviewPanel(
@@ -115,6 +115,7 @@ async function initializeWebview(context: vscode.ExtensionContext, lsApi?: any):
 async function checkRequirement(): Promise<LanguageServerAPI | undefined> {
     const javaExt = vscode.extensions.getExtension("redhat.java");
     if (!javaExt) {
+        // todo: check extension version
         const err: Error = new Error("redhat.java is not installed or the version is too stale.");
         vscode.window.showErrorMessage(err.message);
         setUserError(err);

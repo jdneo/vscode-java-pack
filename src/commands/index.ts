@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import * as vscode from "vscode";
-
+import * as path from "path";
 import { instrumentCommand, webviewCmdLinkHandler } from "../utils";
 import { createMavenProjectCmdHandler, createSpringBootProjectCmdHandler, createQuarkusProjectCmdHandler, createMicroProfileStarterProjectCmdHandler, showExtensionCmdHandler, openUrlCmdHandler, showReleaseNotesHandler, installExtensionCmdHandler } from "./handler";
 import { overviewCmdHandler } from "../overview";
@@ -11,7 +11,8 @@ import { javaGettingStartedCmdHandler } from "../getting-started";
 import { javaExtGuideCmdHandler } from "../ext-guide";
 import { instrumentOperationAsVsCodeCommand } from "vscode-extension-telemetry-wrapper";
 import { showWelcomeWebview } from "../welcome";
-import { showClasspathConfigurationPage } from "../classpath/classpathView";
+import { showClasspathConfigurationPage } from "../classpath/classpathConfigurationView";
+import { markdownPreviewProvider } from "../classpath/classpathDocumentView";
 
 export function initialize(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.commands.registerCommand("java.overview", instrumentCommand(context, "java.overview", instrumentCommand(context, "java.helper.overview", overviewCmdHandler))));
@@ -29,4 +30,8 @@ export function initialize(context: vscode.ExtensionContext) {
   context.subscriptions.push(instrumentOperationAsVsCodeCommand("java.webview.runCommand", webviewCmdLinkHandler));
   context.subscriptions.push(vscode.commands.registerCommand("java.welcome", (options) => showWelcomeWebview(context, options)));
   context.subscriptions.push(vscode.commands.registerCommand("java.classpathConfiguration", () => showClasspathConfigurationPage(context)));
+  context.subscriptions.push(vscode.commands.registerCommand("java.classpathConfiguration2", async () => {
+    await vscode.commands.executeCommand("workbench.action.openSettings", "java.project.sourcePaths");
+    markdownPreviewProvider.show(context.asAbsolutePath(path.join("src", "classpath", "assets", "classpathConfiguration.md")), "Configure Classpath", context);
+  }));
 }

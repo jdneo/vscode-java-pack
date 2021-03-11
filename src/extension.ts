@@ -15,7 +15,7 @@ import { scheduleAction } from "./utils/scheduler";
 import { showWelcomeWebview, WelcomeViewSerializer } from "./welcome";
 import { JavaGettingStartedViewSerializer } from "./getting-started";
 import { JavaExtGuideViewSerializer } from "./ext-guide";
-import { ClassPathConfigurationViewSerializer } from "./classpath/classpathView";
+import { ClassPathConfigurationViewSerializer } from "./classpath/classpathConfigurationView";
 
 export async function activate(context: vscode.ExtensionContext) {
   syncState(context);

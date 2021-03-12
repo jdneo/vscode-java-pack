@@ -121,7 +121,12 @@ async function checkRequirement(): Promise<LanguageServerAPI | undefined> {
         setUserError(err);
         throw(err);
     }
-    await javaExt.activate();
+    await vscode.window.withProgress({
+        location: vscode.ProgressLocation.Notification,
+        title: "Importing projects...",
+    }, (_progress, _token) => {
+        return javaExt.activate(); 
+    });
     return javaExt.exports;
 }
 
@@ -358,23 +363,39 @@ async function getProjectClasspathFromLS(uri: vscode.Uri): Promise<ClasspathComp
         referenceLibraries: response[REFERENCED_LIBRARIES_KEY] as string[],
     };
     const baseFsPath = uri.fsPath;
+
     classpath.sourcePaths = classpath.sourcePaths.map(p => {
         const relativePath: string = path.relative(baseFsPath, p);
         if (!relativePath) {
             return ".";
         }
         return relativePath;
+    }).sort((srcA: string, srcB: string) => {
+        return srcA.localeCompare(srcB);
     });
+
     const outputRelativePath: string = path.relative(baseFsPath, classpath.defaultOutputPath);
     if (!outputRelativePath.startsWith("..")) {
         classpath.defaultOutputPath = path.relative(baseFsPath, classpath.defaultOutputPath);
     }
+
     classpath.referenceLibraries = classpath.referenceLibraries.map(p => {
         const normalizedPath: string = vscode.Uri.file(p).fsPath;
         if (normalizedPath.startsWith(baseFsPath)) {
             return path.relative(baseFsPath, normalizedPath);
         }
         return normalizedPath;
+    }).sort((libA: string, libB: string) => {
+        // relative paths come first
+        const isAbsolutePathForA: boolean = path.isAbsolute(libA);
+        const isAbsolutePathForB: boolean = path.isAbsolute(libB);
+        if (isAbsolutePathForA && !isAbsolutePathForB) {
+            return 1;
+        } else if (!isAbsolutePathForA && isAbsolutePathForB) {
+            return -1;
+        } else {
+            return libA.localeCompare(libB);
+        }
     });
     return classpath;
 }

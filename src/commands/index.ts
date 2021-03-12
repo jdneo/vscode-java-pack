@@ -31,7 +31,7 @@ export function initialize(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.commands.registerCommand("java.welcome", (options) => showWelcomeWebview(context, options)));
   context.subscriptions.push(vscode.commands.registerCommand("java.classpathConfiguration", () => showClasspathConfigurationPage(context)));
   context.subscriptions.push(vscode.commands.registerCommand("java.classpathConfiguration2", async () => {
-    await vscode.commands.executeCommand("workbench.action.openSettings", "java.project.sourcePaths");
+    await vscode.commands.executeCommand("workbench.action.openWorkspaceSettings", "java.project.sourcePaths");
     markdownPreviewProvider.show(context.asAbsolutePath(path.join("src", "classpath", "assets", "classpathConfiguration.md")), "Configure Classpath", context);
   }));
 }

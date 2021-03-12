@@ -76,7 +76,7 @@ const Sources = (): JSX.Element => {
       </div>
       <span className="setting-section-description">Specify the source locations.</span>
       <ListGroup className="list mt-1">
-        <ListGroup.Item className="list-row-header pr-2 pl-0 py-0">
+        <ListGroup.Item className="list-row-header flex-vertical-center pr-2 pl-0 py-0">
           <span className="ml-1">Path</span>
         </ListGroup.Item>
         {sourceSections}

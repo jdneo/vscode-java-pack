@@ -46,7 +46,7 @@ const ReferencedLibraries = (): JSX.Element => {
     );
   } else {
     referencedLibrariesSections = referencedLibraries.map((library, index) => (
-      <ListGroup.Item className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} list-row-body pl-0 py-0`} key={library}>
+      <ListGroup.Item className={`${projectType !== ProjectType.UnmanagedFolder ? "inactive" : ""} list-row-body flex-vertical-center pl-0 py-0`} key={library}>
         <span className="ml-1">{library}</span>
         {projectType === ProjectType.UnmanagedFolder &&
           <span className="scale-up float-right">
